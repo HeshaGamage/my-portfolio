@@ -12,21 +12,34 @@ const socialLinks = [
 
 export default function Contact() {
   const [status, setStatus] = useState('');
+  const [sending, setSending] = useState(false);
   const nameRef = useRef();
   const emailRef = useRef();
   const messageRef = useRef();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const name = nameRef.current.value.trim();
     const email = emailRef.current.value.trim();
     const message = messageRef.current.value.trim();
 
-    const subject = encodeURIComponent(`Portfolio message from ${name}`);
-    const body = encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`);
-
-    window.location.href = `mailto:heshank92@gmail.com?subject=${subject}&body=${body}`;
-    setStatus('sent');
+    setSending(true);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (res.ok) {
+        setStatus('sent');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -104,12 +117,17 @@ export default function Contact() {
               <div className="py-4 text-center text-green-400 text-sm tracking-wide border border-green-900 rounded-full mt-2">
                 Message sent — I'll be in touch soon.
               </div>
+            ) : status === 'error' ? (
+              <div className="py-4 text-center text-red-400 text-sm tracking-wide border border-red-900 rounded-full mt-2">
+                Something went wrong. Email me directly at heshank92@gmail.com
+              </div>
             ) : (
               <button
                 type="submit"
-                className="mt-2 py-4 bg-[var(--accent)] text-[var(--on-accent)] rounded-full font-semibold text-sm hover:bg-[var(--accent-hover)] transition-colors duration-300 tracking-wide"
+                disabled={sending}
+                className="mt-2 py-4 bg-[var(--accent)] text-[var(--on-accent)] rounded-full font-semibold text-sm hover:bg-[var(--accent-hover)] transition-colors duration-300 tracking-wide disabled:opacity-50"
               >
-                Send Message
+                {sending ? 'Sending...' : 'Send Message'}
               </button>
             )}
           </form>
