@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: #1e1e1e;
+  --border2: #2a2a2a;
+  --text1: #f0f0f0;
+  --text2: #cccccc;
+  --text3: #888888;
+  --text4: #666666;
+  --text5: #555555;
+  --text6: #444444;
+  --ghost: #333333;
+  --tag-bg: #151515;
+  --tag-bd: #222222;
+  --hover: #111111;
+  --accent: #ffffff;
+  --accent-hover: #e0e0e0;
+  --on-accent: #0a0a0a;
+}
+
+html.light {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --border: #e5e5e5;
+  --border2: #d0d0d0;
+  --text1: #0a0a0a;
+  --text2: #333333;
+  --text3: #555555;
+  --text4: #555555;
+  --text5: #888888;
+  --text6: #999999;
+  --ghost: #bbbbbb;
+  --tag-bg: #f0f0f0;
+  --tag-bd: #e0e0e0;
+  --hover: #f4f4f4;
+  --accent: #0a0a0a;
+  --accent-hover: #333333;
+  --on-accent: #ffffff;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg);
+    color: var(--text1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+}
+
+@layer utilities {
+  .text-display {
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+
+  .text-section {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1;
+  }
+
+  .divider {
+    border-color: var(--border);
+  }
+
+  .fade-up {
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee-reverse {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+}
